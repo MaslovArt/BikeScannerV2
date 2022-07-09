@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BikeScanner.Domain.Models.Base
 {
@@ -7,6 +6,10 @@ namespace BikeScanner.Domain.Models.Base
     {
         public DateTime CreateDate { get; protected set; }
         public DateTime? UpdateDate { get; protected set; }
+
+        public void MarkCreated() => CreateDate = DateTime.UtcNow;
+
+        public void MarkUpdated() => UpdateDate = DateTime.UtcNow;
     }
 
 }

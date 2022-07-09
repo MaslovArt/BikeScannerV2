@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace BikeScanner.DAL.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -19,10 +19,10 @@ namespace BikeScanner.DAL.Migrations
                     Text = table.Column<string>(type: "text", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: false),
                     Published = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    SourceType = table.Column<string>(type: "text", nullable: false),
+                    SourceType = table.Column<string>(type: "text", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: false)
+                    State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -37,10 +37,10 @@ namespace BikeScanner.DAL.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    Message = table.Column<string>(type: "text", nullable: false),
+                    Message = table.Column<string>(type: "text", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: false)
+                    State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -48,19 +48,19 @@ namespace BikeScanner.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobExecInfos",
+                name: "JobExecutionInfo",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Code = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Value = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_JobExecInfos", x => x.ID);
-                    table.UniqueConstraint("AK_JobExecInfos_Code", x => x.Code);
+                    table.PrimaryKey("PK_JobExecutionInfo", x => x.ID);
+                    table.UniqueConstraint("AK_JobExecutionInfo_Code", x => x.Code);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +73,7 @@ namespace BikeScanner.DAL.Migrations
                     Text = table.Column<string>(type: "text", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: false)
+                    State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,7 +90,7 @@ namespace BikeScanner.DAL.Migrations
                     SearchQuery = table.Column<string>(type: "text", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: false)
+                    State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,10 +104,10 @@ namespace BikeScanner.DAL.Migrations
                     ID = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    SocialDisplayName = table.Column<string>(type: "text", nullable: false),
+                    DisplayName = table.Column<string>(type: "text", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
-                    State = table.Column<string>(type: "text", nullable: false)
+                    State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,6 +121,11 @@ namespace BikeScanner.DAL.Migrations
                 column: "Published");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contents_State",
+                table: "Contents",
+                column: "State");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contents_Text",
                 table: "Contents",
                 column: "Text")
@@ -128,20 +133,24 @@ namespace BikeScanner.DAL.Migrations
                 .Annotation("Npgsql:TsVectorConfig", "russian");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DevMessages_State",
+                table: "DevMessages",
+                column: "State");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_NotificationsQueue_State",
                 table: "NotificationsQueue",
+                column: "State");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subscriptions_State",
+                table: "Subscriptions",
                 column: "State");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriptions_UserId",
                 table: "Subscriptions",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Subscriptions_UserId_SearchQuery",
-                table: "Subscriptions",
-                columns: new[] { "UserId", "SearchQuery" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_State",
@@ -158,7 +167,7 @@ namespace BikeScanner.DAL.Migrations
                 name: "DevMessages");
 
             migrationBuilder.DropTable(
-                name: "JobExecInfos");
+                name: "JobExecutionInfo");
 
             migrationBuilder.DropTable(
                 name: "NotificationsQueue");

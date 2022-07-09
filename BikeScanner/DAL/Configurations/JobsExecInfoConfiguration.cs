@@ -1,16 +1,16 @@
-﻿using System;
-using BikeScanner.DAL.Extensions;
+﻿using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BikeScanner.DAL.Configurations
 {
-	public class JobsExecInfoConfiguration : IEntityTypeConfiguration<JobExecInfo>
+    public class JobsExecInfoConfiguration : IEntityTypeConfiguration<JobExecutionInfo>
     {
-        public void Configure(EntityTypeBuilder<JobExecInfo> builder)
+        public void Configure(EntityTypeBuilder<JobExecutionInfo> builder)
         {
-            builder.HasDctColumns();
+            builder.HasIdColumn();
+            builder.HasAlternateKey(x => x.Code);
         }
     }
 }

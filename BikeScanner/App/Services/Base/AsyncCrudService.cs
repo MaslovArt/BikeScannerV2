@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using BikeScanner.Core.Exceptions;
 using BikeScanner.DAL;
 using BikeScanner.DAL.Extensions;
+using BikeScanner.Domain.Models;
 using BikeScanner.Domain.Models.Base;
 using BikeScanner.Domain.States;
 using Mapster;
@@ -11,21 +15,21 @@ using Z.EntityFramework.Plus;
 
 namespace BikeScanner.App.Services
 {
-	public abstract class AsyncCrudService<T> where T : StatefulCrudBase
+	public abstract class AsyncCrudService<TEntity, TCreateModel, TUpdateModel> where TEntity : StatefulCrudBase
 	{
         protected readonly BikeScannerContext ctx;
-        protected readonly DbSet<T> repository;
+        protected readonly DbSet<TEntity> repository;
 
         public AsyncCrudService(BikeScannerContext ctx)
 		{
             this.ctx = ctx;
-            repository = ctx.Set<T>();
+            repository = ctx.Set<TEntity>();
 		}
 
-        public virtual Task ValidateBeforeInsert<TModel>(TModel model) =>
+        public virtual Task ValidateBeforeInsert(TCreateModel model) =>
             Task.CompletedTask;
 
-        public virtual Task ValidateBeforeUpdate<TModel>(T entity, TModel model) =>
+        public virtual Task ValidateBeforeUpdate(TEntity entity, TUpdateModel model) =>
             Task.CompletedTask;
 
         public Task<TModel> GetRecordAsync<TModel>(int id) =>
@@ -34,34 +38,62 @@ namespace BikeScanner.App.Services
                 .ProjectToType<TModel>()
                 .FirstOrDefaultAsync();
 
-        public Task<TModel[]> GetPageAsync<TModel>(int page, int limit, Expression<Func<T, bool>> filter) =>
-            repository
+        public async Task<Page<TModel>> GetPageAsync<TModel>(
+            int page,
+            int limit,
+            Expression<Func<TEntity, bool>> filter
+            )
+        {
+            var pageItems = await repository
                 .WhereIf(filter, filter != null)
                 .OrderByDescending(x => x.Id)
                 .Page(page, limit)
                 .ProjectToType<TModel>()
                 .ToArrayAsync();
+            var total = pageItems.Length < limit
+                ? pageItems.Length
+                : await repository.WhereIf(filter, filter != null).CountAsync();
 
-        public async Task<T> CreateAsync<TModel>(TModel insertModel)
+            return new Page<TModel>()
+            {
+                Items = pageItems,
+                Total = total
+            };
+        }
+
+        public async Task<TEntity> CreateAsync(
+            TCreateModel insertModel,
+            string initialState = null
+            )
         {
             await ValidateBeforeInsert(insertModel);
 
-            var record = insertModel.Adapt<T>();
+            var record = insertModel.Adapt<TEntity>();
+            record.State = initialState ?? BaseStates.Active.ToString();
+            record.MarkCreated();
             repository.Add(record);
+
             return await ctx.SaveChangesAsync() > 0
                 ? record
                 : throw ApiException.ServerError("Ошибка при вставке записи");
         }
 
-        public async Task<T> UpdateAsync<TModel>(int id, TModel updateModel)
+        public async Task<TEntity> UpdateAsync(
+            int id,
+            TUpdateModel updateModel,
+            string afterUpdateState = null
+            )
         {
             var record = await repository.GetByIdAsync(id)
                 ?? throw ApiException.NotFound();
+            record.State = afterUpdateState ?? record.State;
+            record.MarkUpdated();
+
             return await UpdateRecordAsync(record, updateModel);
         }
 
 
-        private async Task<T> UpdateRecordAsync<TModel>(T record, TModel updateModel)
+        public async Task<TEntity> UpdateRecordAsync(TEntity record, TUpdateModel updateModel)
         {
             await ValidateBeforeUpdate(record, updateModel);
 
@@ -71,13 +103,13 @@ namespace BikeScanner.App.Services
             return record;
         }
 
-        public async Task DeleteLogicalAsync(int id, string comments)
+        public async Task DeleteLogicalAsync(int id)
         {
             var result = await repository
                 .WithId(id)
                 .UpdateFromQueryAsync(new Dictionary<string, object>
                 {
-                    [nameof(StatefulCrudBase.State)] = BaseStates.Deleted
+                    [nameof(StatefulCrudBase.State)] = BaseStates.Deleted.ToString()
                 });
             if (result <= 0)
                 throw ApiException.NotFound();

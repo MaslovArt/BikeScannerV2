@@ -1,9 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace BikeScanner.Domain.States
 {
-	public enum BaseStates
+    public enum BaseStates
 	{
 		[Description("Активный")] Active,
         [Description("Удален")] Deleted

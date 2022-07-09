@@ -1,5 +1,4 @@
-﻿using System;
-using BikeScanner.DAL.Extensions;
+﻿using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,8 +11,8 @@ namespace BikeScanner.DAL.Configurations
         {
             builder.HasIdColumn();
             builder.HasCrudColumns();
+            builder.UseExcludeDeleteStateFilter();
             builder.HasIndex(e => e.UserId);
-            builder.HasIndex(e => new { e.UserId, e.SearchQuery }).IsUnique();
             builder.Property(e => e.SearchQuery).IsRequired();
         }
     }

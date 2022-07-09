@@ -18,10 +18,14 @@ namespace BikeScanner
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMemoryCache();
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddPostgresDB(Configuration);
+            services.AddAppServices();
+            services.AddTelegramBotUI(Configuration);
+            services.AddTelegramPollingHostedService();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,6 +36,7 @@ namespace BikeScanner
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.UseSwagger();
@@ -40,7 +45,6 @@ namespace BikeScanner
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }

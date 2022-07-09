@@ -1,5 +1,4 @@
-﻿using System;
-using BikeScanner.DAL.Extensions;
+﻿using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

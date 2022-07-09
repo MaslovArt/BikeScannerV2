@@ -1,5 +1,4 @@
-﻿using System;
-using BikeScanner.DAL.Constants;
+﻿using BikeScanner.DAL.Constants;
 using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +12,7 @@ namespace BikeScanner.DAL.Configurations
         {
             builder.HasIdColumn();
             builder.HasCrudColumns();
+            builder.UseExcludeDeleteStateFilter();
             builder.HasAlternateKey(e => e.Url);
             builder.HasIndex(e => e.Published);
             builder

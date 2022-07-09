@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BikeScanner.Domain.Models.Base;
 
 namespace BikeScanner.DAL.Extensions

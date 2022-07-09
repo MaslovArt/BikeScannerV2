@@ -1,5 +1,5 @@
 ﻿//Add new migration
-dotnet ef migrations add [name] -output-dir "DAL/Migrations"
+dotnet ef migrations add [name] -o "DAL/Migrations"
 
 //Update database
 dotnet ef database update

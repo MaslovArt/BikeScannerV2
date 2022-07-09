@@ -1,10 +1,11 @@
-﻿using System;
-using BikeScanner.DAL;
+﻿using BikeScanner.DAL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BikeScanner.ServiceCollection
 {
-	public static class EFServiceCollectionExtensions
+    public static class EFServiceCollectionExtensions
 	{
         public static IServiceCollection AddPostgresDB(
             this IServiceCollection services,

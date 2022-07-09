@@ -6,7 +6,7 @@ namespace BikeScanner.Domain.Models
 	public class User : StatefulCrudBase
 	{
         public long UserId { get; set; }
-        public string SocialDisplayName { get; set; }
+        public string DisplayName { get; set; }
     }
 }
 

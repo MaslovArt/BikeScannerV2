@@ -1,5 +1,4 @@
-﻿using System;
-using BikeScanner.DAL.Configurations;
+﻿using BikeScanner.DAL.Configurations;
 using BikeScanner.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,7 +13,7 @@ namespace BikeScanner.DAL
         public DbSet<Content> Contents { get; set; }
         public DbSet<NotificationQueue> NotificationsQueue { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
-        public DbSet<JobExecInfo> JobExecInfos { get; set; }
+        public DbSet<JobExecutionInfo> JobExecutionInfo { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<DevMessage> DevMessages { get; set; }
 

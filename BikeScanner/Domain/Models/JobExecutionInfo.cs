@@ -1,7 +1,8 @@
-﻿using System;
-namespace BikeScanner.Domain.Models.Base
+﻿using BikeScanner.Domain.Models.Base;
+
+namespace BikeScanner.Domain.Models
 {
-	public class DctBase : EntityBase
+    public class JobExecutionInfo : EntityBase
 	{
         public string Code { get; set; }
         public string Name { get; set; }

@@ -1,13 +1,14 @@
-﻿using System;
-using BikeScanner.Domain.Models.Base;
+﻿using BikeScanner.Domain.Models.Base;
+using BikeScanner.Domain.States;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BikeScanner.DAL.Extensions
 {
-	public static class EntityTypeBuilderExtensions
+    public static class EntityTypeBuilderExtensions
 	{
-        public static void HasIdColumn<T>(this EntityTypeBuilder<T> builder) where T : EntityBase
+        public static void HasIdColumn<T>(this EntityTypeBuilder<T> builder)
+            where T : EntityBase
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id)
@@ -15,9 +16,10 @@ namespace BikeScanner.DAL.Extensions
                 .ValueGeneratedOnAdd();
         }
 
-        public static void HasCrudColumns<T>(this EntityTypeBuilder<T> builder) where T : StatefulCrudBase
+        public static void HasCrudColumns<T>(this EntityTypeBuilder<T> builder)
+            where T : StatefulCrudBase
         {
-
+            builder.HasIndex(x => x.State);
             builder
                 .Property(x => x.CreateDate)
                 .HasColumnType("DATE")
@@ -28,11 +30,13 @@ namespace BikeScanner.DAL.Extensions
                 .ValueGeneratedOnUpdate();
         }
 
-        public static void HasDctColumns<T>(this EntityTypeBuilder<T> builder) where T : DctBase
-        {
-            builder.HasIdColumn();
-            builder.HasAlternateKey(x => x.Code);
-        }
+        public static void UseExcludeDeleteStateFilter<T>(this EntityTypeBuilder<T> builder)
+            where T : StatefulCrudBase =>
+            builder.HasQueryFilter(x => x.State != BaseStates.Deleted.ToString());
+
+        public static void UseActiveStateFilter<T>(this EntityTypeBuilder<T> builder)
+            where T : StatefulCrudBase =>
+            builder.HasQueryFilter(x => x.State == BaseStates.Active.ToString());
 
     }
 }

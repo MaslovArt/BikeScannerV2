@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace BikeScanner.DAL.Migrations
 {
     [DbContext(typeof(BikeScannerContext))]
-    [Migration("20220626194214_Initial")]
-    partial class Initial
+    [Migration("20220709120706_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -41,11 +41,9 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SourceType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Text")
@@ -65,6 +63,8 @@ namespace BikeScanner.DAL.Migrations
                     b.HasAlternateKey("Url");
 
                     b.HasIndex("Published");
+
+                    b.HasIndex("State");
 
                     b.HasIndex("Text")
                         .HasAnnotation("Npgsql:TsVectorConfig", "russian");
@@ -88,11 +88,9 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("DATE");
 
                     b.Property<string>("Message")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -104,10 +102,12 @@ namespace BikeScanner.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("State");
+
                     b.ToTable("DevMessages");
                 });
 
-            modelBuilder.Entity("BikeScanner.Domain.Models.JobExecInfo", b =>
+            modelBuilder.Entity("BikeScanner.Domain.Models.JobExecutionInfo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -121,18 +121,16 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Value")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasAlternateKey("Code");
 
-                    b.ToTable("JobExecInfos");
+                    b.ToTable("JobExecutionInfo");
                 });
 
             modelBuilder.Entity("BikeScanner.Domain.Models.NotificationQueue", b =>
@@ -149,7 +147,6 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("DATE");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Text")
@@ -188,7 +185,6 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -200,10 +196,9 @@ namespace BikeScanner.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("State");
 
-                    b.HasIndex("UserId", "SearchQuery")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -221,12 +216,10 @@ namespace BikeScanner.DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("DATE");
 
-                    b.Property<string>("SocialDisplayName")
-                        .IsRequired()
+                    b.Property<string>("DisplayName")
                         .HasColumnType("text");
 
                     b.Property<string>("State")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
