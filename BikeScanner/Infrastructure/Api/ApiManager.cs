@@ -41,7 +41,7 @@ namespace BikeScanner.Infrastructure.Api
             if (result.IsSuccess)
                 _logger.LogDebug($"End request ({requestId}) completed");
             else
-                _logger.LogWarning($"End request ({requestId}) failed with code: {result.ErrorCode} and message: {result.ErrorMessage}");
+                _logger.LogError($"End request ({requestId}) failed with code: {result.ErrorCode} and message: {result.ErrorMessage}");
 
             return result;
         }
