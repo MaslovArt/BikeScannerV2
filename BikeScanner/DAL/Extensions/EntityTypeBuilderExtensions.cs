@@ -20,14 +20,14 @@ namespace BikeScanner.DAL.Extensions
             where T : StatefulCrudBase
         {
             builder.HasIndex(x => x.State);
-            builder
-                .Property(x => x.CreateDate)
-                .HasColumnType("DATE")
-                .ValueGeneratedOnAdd();
-            builder
-                .Property(x => x.UpdateDate)
-                .HasColumnType("DATE")
-                .ValueGeneratedOnUpdate();
+            //builder
+            //    .Property(x => x.CreateDate)
+            //    .HasColumnType("DATE")
+            //    .ValueGeneratedOnAdd();
+            //builder
+            //    .Property(x => x.UpdateDate)
+            //    .HasColumnType("DATE")
+            //    .ValueGeneratedOnUpdate();
         }
 
         public static void UseExcludeDeleteStateFilter<T>(this EntityTypeBuilder<T> builder)

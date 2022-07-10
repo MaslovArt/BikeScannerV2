@@ -23,7 +23,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Subs
         public override async Task Execute(CommandContext context)
         {
             var subId = int.Parse(ChatInput(context, CommandNames.Internal.ConfirmDeleteSub));
-            var sub = await _subsService.GetRecordAsync<ViewSubscriptionOutput>(subId);
+            var sub = await _subsService.GetRecordAsync<ViewSubscriptionModel>(subId);
 
             var confirmMessage = $"Подтвердите удаление '{sub.SearchQuery}'";
             var confirmBtn = TelegramMarkupHelper.MessageColumnBtns(

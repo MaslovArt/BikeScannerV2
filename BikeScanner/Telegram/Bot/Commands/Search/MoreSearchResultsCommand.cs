@@ -14,14 +14,14 @@ namespace BikeScanner.Telegram.Bot.Commands.Search
     public class MoreSearchResultsCommand : CommandBase
     {
         private readonly int _perPage;
-        private readonly SearchService _searchService;
+        private readonly ContentService _searchService;
 
         public MoreSearchResultsCommand(
-            SearchService searchService,
-            IOptions<TelegramUIConfig> options
+            ContentService searchService,
+            IOptions<BikeScannerConfig> options
             )
         {
-            _perPage = options.Value.SearchItemsPerPage;
+            _perPage = options.Value.TelegramSearchItemsPerPage;
             _searchService = searchService;
         }
 
@@ -33,7 +33,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Search
             var searchQuery = GetParam(context, 0, CommandNames.Internal.MoreSearchResults);
             var skip = int.Parse(GetParam(context, 1, CommandNames.Internal.MoreSearchResults));
 
-            var result = await _searchService.Search<ViewContentOutput>(searchQuery, skip, _perPage);
+            var result = await _searchService.Search<ViewContentModel>(searchQuery, skip, _perPage);
 
             var adUrls = result.Items.Select(r => r.Url);
             await SendMessages(adUrls, context);

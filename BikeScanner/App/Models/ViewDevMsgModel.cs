@@ -1,6 +1,6 @@
 ﻿namespace BikeScanner.App.Models
 {
-    public class ViewDevMsgOutput : DevMsgCreateInput
+    public class ViewDevMsgModel : DevMsgCreateModel
 	{
 		public int Id { get; set; }
 	}

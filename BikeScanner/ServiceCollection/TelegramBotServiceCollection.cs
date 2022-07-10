@@ -23,8 +23,8 @@ namespace BikeScanner.ServiceCollection
         {
             services.Configure<TelegramAccessConfig>(
                 configuration.GetSection(nameof(TelegramAccessConfig)));
-            services.Configure<TelegramUIConfig>(
-                configuration.GetSection(nameof(TelegramUIConfig)));
+            services.Configure<BikeScannerConfig>(
+                configuration.GetSection(nameof(BikeScannerConfig)));
 
             services.AddSingleton<ITelegramBotClient, TelegramBotClient>(x => {
                 var bot = x.GetRequiredService<IOptions<TelegramAccessConfig>>().Value;

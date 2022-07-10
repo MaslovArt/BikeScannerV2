@@ -11,12 +11,12 @@ namespace BikeScanner.Telegram.Bot.Commands.Subs
     /// </summary>
     public class ApplySubAddCommand : CommandBase
     {
-        private readonly SearchService          _searchService;
+        private readonly ContentService          _searchService;
         private readonly SubscriptionsService   _subsService;
 
         public ApplySubAddCommand(
             SubscriptionsService subsService,
-            SearchService searchService
+            ContentService searchService
             )
         {
             _subsService = subsService;
@@ -32,7 +32,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Subs
         {
             var searchQuery = ChatInput(context, CommandNames.Internal.AddSubFromSearch);
 
-            var newSub = new SubscriptionCreateInput(context.UserId, searchQuery);
+            var newSub = new SubscriptionCreateModel(context.UserId, searchQuery);
             await _subsService.CreateAsync(newSub);
 
             var message = $"\nПоиск '{searchQuery}' сохранен в подписках.";

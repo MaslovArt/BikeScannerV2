@@ -1,4 +1,9 @@
-﻿using BikeScanner.ServiceCollection;
+﻿using System;
+using BikeScanner.App.Hangfire;
+using BikeScanner.Core.Extensions;
+using BikeScanner.ServiceCollection;
+using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -24,11 +29,20 @@ namespace BikeScanner
             services.AddSwaggerGen();
             services.AddPostgresDB(Configuration);
             services.AddAppServices();
+            services.AddCrawlers(Configuration);
+            services.AddJobs();
+            services.AddTelegramNotificator();
             services.AddTelegramBotUI(Configuration);
             services.AddTelegramPollingHostedService();
+            services.AddHangfire(o => o.UsePostgreSqlStorage(Configuration.DefaultConnection()));
+            services.AddHangfireServer();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IWebHostEnvironment env,
+            IServiceProvider serviceProvider
+            )
         {
             if (env.IsDevelopment())
             {
@@ -39,12 +53,13 @@ namespace BikeScanner
             app.UseRouting();
             app.UseHttpsRedirection();
             app.UseAuthorization();
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseHangfireDashboard();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            JobsSetup.ConfigeJobs(serviceProvider);
         }
     }
 }

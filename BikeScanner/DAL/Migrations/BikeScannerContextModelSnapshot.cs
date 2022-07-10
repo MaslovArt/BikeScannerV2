@@ -32,8 +32,7 @@ namespace BikeScanner.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("Published")
                         .HasColumnType("timestamp with time zone");
@@ -49,8 +48,7 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -82,8 +80,7 @@ namespace BikeScanner.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Message")
                         .HasColumnType("text");
@@ -92,8 +89,7 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -141,8 +137,7 @@ namespace BikeScanner.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("State")
                         .HasColumnType("text");
@@ -152,8 +147,7 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -175,8 +169,7 @@ namespace BikeScanner.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SearchQuery")
                         .IsRequired()
@@ -186,8 +179,7 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
@@ -211,8 +203,7 @@ namespace BikeScanner.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreateDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DisplayName")
                         .HasColumnType("text");
@@ -221,8 +212,7 @@ namespace BikeScanner.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdateDate")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("DATE");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");

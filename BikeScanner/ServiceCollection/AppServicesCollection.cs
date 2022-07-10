@@ -3,15 +3,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace BikeScanner.ServiceCollection
 {
-    public static class AppServicesCollectionExtensins
+    public static class AppServicesCollection
     {
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
             services.AddScoped<UsersService>();
             services.AddScoped<SubscriptionsService>();
-            services.AddScoped<SearchService>();
+            services.AddScoped<ContentService>();
             services.AddScoped<DevMessagesService>();
             services.AddScoped<JobExecutionService>();
+            services.AddScoped<NotificationService>();
 
             return services;
         }

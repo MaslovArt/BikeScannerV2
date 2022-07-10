@@ -10,7 +10,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace BikeScanner.App.Services
 {
-    public class UsersService : AsyncCrudService<User, UserCreateInput, UserCreateInput>
+    public class UsersService : AsyncCrudService<User, UserCreateModel, UserCreateModel>
     {
         private readonly IMemoryCache _cache;
 
@@ -20,14 +20,14 @@ namespace BikeScanner.App.Services
             _cache = cache;
         }
 
-        public override async Task ValidateBeforeInsert(UserCreateInput model)
+        public override async Task ValidateBeforeInsert(UserCreateModel model)
         {
             var isExists = await ctx.Users.AnyAsync(u => u.UserId == model.UserId);
             if (isExists)
                 throw ApiException.Confict($"Пользователь {model.UserId} уже существует.");
         }
 
-        public async Task<User> EnsureUser(UserCreateInput model)
+        public async Task<User> EnsureUser(UserCreateModel model)
         {
             var user = await ctx.Users.FirstOrDefaultAsync(u => u.UserId == model.UserId);
             if (user == null)

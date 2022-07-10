@@ -38,6 +38,11 @@ namespace BikeScanner.App.Services
                 .ProjectToType<TModel>()
                 .FirstOrDefaultAsync();
 
+        public Task<TModel[]> GetAll<TModel>() =>
+            repository
+                .ProjectToType<TModel>()
+                .ToArrayAsync();
+
         public async Task<Page<TModel>> GetPageAsync<TModel>(
             int page,
             int limit,
@@ -75,6 +80,30 @@ namespace BikeScanner.App.Services
 
             return await ctx.SaveChangesAsync() > 0
                 ? record
+                : throw ApiException.ServerError("Ошибка при вставке записи");
+        }
+
+        public async Task<TEntity[]> CreateManyAsync(
+            IEnumerable<TCreateModel> insertModels,
+            string initialState = null
+            )
+        {
+            if (insertModels.Count() == 0)
+                return Array.Empty<TEntity>();
+
+            foreach (var insertModel in insertModels)
+                await ValidateBeforeInsert(insertModel);
+
+            var records = insertModels.Adapt<List<TEntity>>();
+            records.ForEach(r =>
+            {
+                r.State = initialState ?? BaseStates.Active.ToString();
+                r.MarkCreated();
+            });
+            repository.AddRange(records);
+
+            return await ctx.SaveChangesAsync() > 0
+                ? records.ToArray()
                 : throw ApiException.ServerError("Ошибка при вставке записи");
         }
 
@@ -123,7 +152,6 @@ namespace BikeScanner.App.Services
             if (result <= 0)
                 throw ApiException.NotFound();
         }
-
 
     }
 }

@@ -2,7 +2,7 @@
 
 namespace BikeScanner.App.Models
 {
-	public class SearchInput
+	public class SearchRequestModel
 	{
 		public string Query { get; set; }
 	}

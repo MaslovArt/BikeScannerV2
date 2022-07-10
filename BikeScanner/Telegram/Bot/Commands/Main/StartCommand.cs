@@ -22,7 +22,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Main
 
         public async override Task ExecuteCommand(CommandContext context)
         {
-            var userModel = new UserCreateInput()
+            var userModel = new UserCreateModel()
             {
                 DisplayName = context.UserName,
                 UserId = context.UserId

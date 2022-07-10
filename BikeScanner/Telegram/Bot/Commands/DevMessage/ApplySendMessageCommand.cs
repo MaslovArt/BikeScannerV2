@@ -24,7 +24,7 @@ namespace BikeScanner.Telegram.Bot.Commands.DevMessage
             context.BotContext.State = BotState.Default;
 
             var input = ChatInput(context);
-            var newMsg = new DevMsgCreateInput(context.UserId, input);
+            var newMsg = new DevMsgCreateModel(context.UserId, input);
             await _devMessages.CreateAsync(newMsg);
 
             await SendMessage("Сообщение отправлено.", context);

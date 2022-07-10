@@ -1,14 +1,14 @@
 ﻿namespace BikeScanner.App.Models
 {
-    public class DevMsgCreateInput
+    public class DevMsgCreateModel
 	{
         public long UserId { get; set; }
         public string Message { get; set; }
 
-        public DevMsgCreateInput()
+        public DevMsgCreateModel()
         { }
 
-        public DevMsgCreateInput(long userId, string message)
+        public DevMsgCreateModel(long userId, string message)
         {
             UserId = userId;
             Message = message;

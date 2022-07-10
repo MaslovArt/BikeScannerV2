@@ -26,7 +26,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Subs
 
         public override async Task ExecuteCommand(CommandContext context)
         {
-            var subs = await _subsService.GetUserSubs<ViewSubscriptionOutput>(context.UserId);
+            var subs = await _subsService.GetUserSubs<ViewSubscriptionModel>(context.UserId);
 
             if (subs.Length == 0)
             {

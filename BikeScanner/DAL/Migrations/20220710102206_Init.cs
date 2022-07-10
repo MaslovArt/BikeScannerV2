@@ -20,8 +20,8 @@ namespace BikeScanner.DAL.Migrations
                     Url = table.Column<string>(type: "text", nullable: false),
                     Published = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     SourceType = table.Column<string>(type: "text", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -38,8 +38,8 @@ namespace BikeScanner.DAL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Message = table.Column<string>(type: "text", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -71,8 +71,8 @@ namespace BikeScanner.DAL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     Text = table.Column<string>(type: "text", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -88,8 +88,8 @@ namespace BikeScanner.DAL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     SearchQuery = table.Column<string>(type: "text", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
@@ -105,8 +105,8 @@ namespace BikeScanner.DAL.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     DisplayName = table.Column<string>(type: "text", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "DATE", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "DATE", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     State = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>

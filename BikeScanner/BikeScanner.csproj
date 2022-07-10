@@ -20,6 +20,11 @@
     </PackageReference>
     <PackageReference Include="Telegram.Bot" Version="18.0.0" />
     <PackageReference Include="Telegram.Bot.Extensions.Polling" Version="1.0.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.43" />
+    <PackageReference Include="HtmlAgilityPack.CssSelectors.NetCore" Version="1.2.1" />
+    <PackageReference Include="Hangfire.Core" Version="1.7.30" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
+    <PackageReference Include="Hangfire.PostgreSql" Version="1.9.8" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +59,22 @@
     <None Remove="Telegram\HostedServices\" />
     <None Remove="Telegram\Bot\" />
     <None Remove="App\Models\" />
+    <None Remove="App\Interfaces\" />
+    <None Remove="Infrastructure\Crawlers\" />
+    <None Remove="Infrastructure\Crawlers\DirtRu\" />
+    <None Remove="Infrastructure\Crawlers\DirtRu\Models\" />
+    <None Remove="Infrastructure\Crawlers\DirtRu\Services\" />
+    <None Remove="HtmlAgilityPack" />
+    <None Remove="HtmlAgilityPack.CssSelectors.NetCore" />
+    <None Remove="Infrastructure\Crawlers\Vk\" />
+    <None Remove="Infrastructure\Crawlers\Vk\Models\" />
+    <None Remove="Infrastructure\ApiManager\" />
+    <None Remove="App\Jobs\" />
+    <None Remove="App\Hangfire\" />
+    <None Remove="Hangfire.Core" />
+    <None Remove="Hangfire.AspNetCore" />
+    <None Remove="Hangfire.PostgreSql" />
+    <None Remove="Infrastructure\Notificators\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\" />
@@ -78,6 +99,17 @@
     <Folder Include="Telegram\HostedServices\" />
     <Folder Include="Telegram\Bot\" />
     <Folder Include="App\Models\" />
+    <Folder Include="App\Interfaces\" />
+    <Folder Include="Infrastructure\Crawlers\" />
+    <Folder Include="Infrastructure\Crawlers\DirtRu\" />
+    <Folder Include="Infrastructure\Crawlers\DirtRu\Models\" />
+    <Folder Include="Infrastructure\Crawlers\DirtRu\Services\" />
+    <Folder Include="Infrastructure\Crawlers\Vk\" />
+    <Folder Include="Infrastructure\Crawlers\Vk\Models\" />
+    <Folder Include="Infrastructure\Api\" />
+    <Folder Include="App\Jobs\" />
+    <Folder Include="App\Hangfire\" />
+    <Folder Include="Infrastructure\Notificators\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BikeScanner.App.Services
 {
-    public class SubscriptionsService : AsyncCrudService<Subscription, SubscriptionCreateInput, SubscriptionCreateInput>
+    public class SubscriptionsService : AsyncCrudService<Subscription, SubscriptionCreateModel, SubscriptionCreateModel>
     {
         private int _maximumSubsPerUser = 10;
 
@@ -16,7 +16,7 @@ namespace BikeScanner.App.Services
             : base(ctx)
         { }
 
-        public override async Task ValidateBeforeInsert(SubscriptionCreateInput model)
+        public override async Task ValidateBeforeInsert(SubscriptionCreateModel model)
         {
             if (!model.SearchQuery.IsMinLength(2))
                 throw ApiException.Error("Требуется минимум 2 символа для поиска.");

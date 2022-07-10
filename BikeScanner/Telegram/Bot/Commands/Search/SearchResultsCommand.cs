@@ -14,14 +14,14 @@ namespace BikeScanner.Telegram.Bot.Commands.Search
     public class SearchResultsCommand : CommandBase
     {
         private readonly int _perPage;
-        private readonly SearchService _searchService;
+        private readonly ContentService _searchService;
 
         public SearchResultsCommand(
-            SearchService searchService,
-            IOptions<TelegramUIConfig> options
+            ContentService searchService,
+            IOptions<BikeScannerConfig> options
             )
         {
-            _perPage = options.Value.SearchItemsPerPage;
+            _perPage = options.Value.TelegramSearchItemsPerPage;
             _searchService = searchService;
         }
 
@@ -35,7 +35,7 @@ namespace BikeScanner.Telegram.Bot.Commands.Search
         {
             var searchQuery = ChatInput(context, CommandNames.Internal.ShowSubsFromSearch);
 
-            var result = await _searchService.Search<ViewContentOutput>(searchQuery, 0, _perPage);
+            var result = await _searchService.Search<ViewContentModel>(searchQuery, 0, _perPage);
 
             var resultMessage = $"По запросу '{searchQuery}' нашел {result.Total} объявлений.";
             var saveSearchBtn = TelegramMarkupHelper.MessageRowBtns(

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using BikeScanner.App.Models;
 using BikeScanner.DAL;
 using BikeScanner.DAL.Constants;
 using BikeScanner.DAL.Extensions;
@@ -10,14 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BikeScanner.App.Services
 {
-	public class SearchService
+	public class ContentService : AsyncCrudService<Content, ContentModel, ContentModel>
 	{
-        private readonly DbSet<Content> _repository;
-
-		public SearchService(BikeScannerContext ctx)
-		{
-            _repository = ctx.Contents;
-		}
+		public ContentService(BikeScannerContext ctx)
+            : base(ctx)
+		{ }
 
         public async Task<Page<TModel>> Search<TModel>(
             string query,
@@ -25,7 +23,7 @@ namespace BikeScanner.App.Services
             int take = 10,
             DateTime? since = null)
         {
-            var queryable = _repository
+            var queryable = repository
                 .AsNoTracking()
                 .WhereIf(c => c.CreateDate >= since.Value, since.HasValue)
                 .Where(c => EF.Functions.ToTsVector(PostgreVectorLangs.Eng, c.Text).Matches(query))
@@ -50,7 +48,7 @@ namespace BikeScanner.App.Services
         }
 
         public Task<int> CountSearch(string query) =>
-            _repository
+            repository
                 .Where(c => EF.Functions.ToTsVector(PostgreVectorLangs.Eng, c.Text).Matches(query))
                 .CountAsync();
     }

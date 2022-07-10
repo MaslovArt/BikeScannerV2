@@ -1,14 +1,14 @@
 ﻿namespace BikeScanner.App.Models
 {
-    public class SubscriptionCreateInput
+    public class SubscriptionCreateModel
 	{
         public long UserId { get; set; }
         public string SearchQuery { get; set; }
 
-        public SubscriptionCreateInput()
+        public SubscriptionCreateModel()
         { }
 
-        public SubscriptionCreateInput(long userId, string searchQuery)
+        public SubscriptionCreateModel(long userId, string searchQuery)
         {
             UserId = userId;
             SearchQuery = searchQuery;

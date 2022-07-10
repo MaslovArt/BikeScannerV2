@@ -6,11 +6,15 @@ namespace BikeScanner.Domain.Models.Base
     {
         public string State { get; set; }
 
-        public bool IsInState<TEnum>(TEnum state) where TEnum : Enum =>
+        public bool IsInState(Enum state) =>
             state.ToString().Equals(State, StringComparison.OrdinalIgnoreCase);
 
-        public TEnum StateEnum<TEnum>() where TEnum : struct, Enum =>
-            Enum.Parse<TEnum>(State);
+        public bool IsInState(string state) =>
+            state.Equals(State, StringComparison.OrdinalIgnoreCase);
+
+        public void SetState(string state) => State = state;
+
+        public void SetState(Enum state) => State = state.ToString();
     }
 
 }

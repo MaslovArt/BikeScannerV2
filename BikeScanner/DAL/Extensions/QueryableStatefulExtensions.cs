@@ -9,6 +9,9 @@ namespace BikeScanner.DAL.Extensions
         public static IQueryable<T> WithState<T>(this IQueryable<T> queryable, string state) where T : StatefulCrudBase =>
             queryable.Where(x => x.State == state);
 
+        public static IQueryable<T> WithState<T>(this IQueryable<T> queryable, Enum state) where T : StatefulCrudBase =>
+            queryable.Where(x => x.State == state.ToString());
+
         public static IQueryable<T> WithStates<T>(this IQueryable<T> queryable, string[] states) where T : StatefulCrudBase =>
             queryable.Where(x => states.Contains(x.State));
 
