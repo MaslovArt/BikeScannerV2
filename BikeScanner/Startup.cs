@@ -24,7 +24,7 @@ namespace BikeScanner
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMemoryCache();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
             services.AddPostgresDB(Configuration);
@@ -33,7 +33,7 @@ namespace BikeScanner
             services.AddJobs();
             services.AddTelegramNotificator();
             services.AddTelegramBotUI(Configuration);
-            services.AddTelegramPollingHostedService();
+            services.AddTelegramWebhookHostedService();
             services.AddHangfire(o => o.UsePostgreSqlStorage(Configuration.DefaultConnection()));
             services.AddHangfireServer();
         }
@@ -44,22 +44,21 @@ namespace BikeScanner
             IServiceProvider serviceProvider
             )
         {
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
             app.UseRouting();
-            app.UseHttpsRedirection();
-            app.UseAuthorization();
-            app.UseHangfireDashboard();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
 
+            app.UseHangfireSimpleAuth(Configuration);
+            app.UseHangfireDashboard();
+
+            app.UseSwaggerSimpleAuth(Configuration);
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
             JobsSetup.ConfigeJobs(serviceProvider);
         }
     }
+
 }

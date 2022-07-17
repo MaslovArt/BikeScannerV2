@@ -25,6 +25,7 @@
     <PackageReference Include="Hangfire.Core" Version="1.7.30" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
     <PackageReference Include="Hangfire.PostgreSql" Version="1.9.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -75,6 +76,9 @@
     <None Remove="Hangfire.AspNetCore" />
     <None Remove="Hangfire.PostgreSql" />
     <None Remove="Infrastructure\Notificators\" />
+    <None Remove="Controllers\" />
+    <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
+    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAL\" />
@@ -110,6 +114,8 @@
     <Folder Include="App\Jobs\" />
     <Folder Include="App\Hangfire\" />
     <Folder Include="Infrastructure\Notificators\" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

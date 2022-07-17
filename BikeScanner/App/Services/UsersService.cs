@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using BikeScanner.App.Models;
 using BikeScanner.Core.Exceptions;
 using BikeScanner.DAL;
+using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
 using BikeScanner.Domain.States;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +43,8 @@ namespace BikeScanner.App.Services
             var user = await ctx.Users.FirstOrDefaultAsync(u => u.UserId == userId)
                 ?? throw ApiException.NotFound($"Пользователь не найден.");
 
-            user.State = UserStates.Active.ToString();
+            user.SetState(UserStates.Banned);
+            user.MarkUpdated();
             await ctx.SaveChangesAsync();
         }
 
@@ -50,19 +53,26 @@ namespace BikeScanner.App.Services
             var user = await ctx.Users.FirstOrDefaultAsync(u => u.UserId == userId)
                 ?? throw ApiException.NotFound($"Пользователь не найден.");
 
-            user.State = UserStates.Stopped.ToString();
+            user.SetState(UserStates.Banned);
+            user.MarkUpdated();
             await ctx.SaveChangesAsync();
         }
 
         public async Task<bool> IsBanned(long userId)
         {
-            var blackListUsers = _cache.Get<long[]>("black_list");
+            var blackListUsersKey = "black_list";
+            var blackListUsers = _cache.Get<long[]>(blackListUsersKey);
             if (blackListUsers == null)
             {
                 blackListUsers = await ctx.Users
-                    .Where(u => u.State == UserStates.Banned.ToString())
+                    .WithState(UserStates.Banned)
                     .Select(u => u.UserId)
                     .ToArrayAsync();
+                _cache.Set(
+                    blackListUsersKey,
+                    blackListUsers,
+                    new MemoryCacheEntryOptions() { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60) }
+                    );
             }
 
             return blackListUsers.Any(u => u == userId);
