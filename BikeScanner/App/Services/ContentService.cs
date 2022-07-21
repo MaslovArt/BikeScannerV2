@@ -6,12 +6,13 @@ using BikeScanner.DAL;
 using BikeScanner.DAL.Constants;
 using BikeScanner.DAL.Extensions;
 using BikeScanner.Domain.Models;
+using BikeScanner.Domain.States;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 
 namespace BikeScanner.App.Services
 {
-	public class ContentService : AsyncCrudService<Content, ContentModel, ContentModel>
+    public class ContentService : AsyncCrudService<Content, ContentModel, ContentModel>
 	{
 		public ContentService(BikeScannerContext ctx)
             : base(ctx)
@@ -49,8 +50,14 @@ namespace BikeScanner.App.Services
 
         public Task<int> CountSearch(string query) =>
             repository
-                .Where(c => EF.Functions.ToTsVector(PostgreVectorLangs.Eng, c.Text).Matches(query))
+                .Where(c => EF.Functions
+                    .ToTsVector(PostgreVectorLangs.Eng, c.Text)
+                    .Matches(query))
                 .CountAsync();
+
+        public Task<int> ArchiveContents(DateTime since) =>
+            UpdateState(ContentStates.Archive, c => c.State == ContentStates.Active.ToString() &&
+                                                    c.Published < since);
     }
 }
 

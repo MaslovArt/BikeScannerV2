@@ -32,10 +32,10 @@ namespace BikeScanner.App.Services
         }
 
         public Task ScheduleNotification(NotificationQueueModel model) =>
-            CreateAsync(model, NotificationQueueStates.Scheduled.ToString());
+            CreateAsync(model, NotificationQueueStates.Scheduled);
 
         public Task ScheduleNotifications(IEnumerable<NotificationQueueModel> models) =>
-            CreateManyAsync(models, NotificationQueueStates.Scheduled.ToString());
+            CreateManyAsync(models, NotificationQueueStates.Scheduled);
 
         public async Task<int> SendAllScheduledNotifications()
         {

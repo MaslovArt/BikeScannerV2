@@ -5,7 +5,6 @@ using BikeScanner.ServiceCollection;
 using Hangfire;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,16 +32,13 @@ namespace BikeScanner
             services.AddJobs();
             services.AddTelegramNotificator();
             services.AddTelegramBotUI(Configuration);
-            services.AddTelegramWebhookHostedService();
-            services.AddHangfire(o => o.UsePostgreSqlStorage(Configuration.DefaultConnection()));
+            //services.AddTelegramWebhookHostedService();
+            services.AddHangfire(o =>
+                o.UsePostgreSqlStorage(Configuration.DefaultConnection()));
             services.AddHangfireServer();
         }
 
-        public void Configure(
-            IApplicationBuilder app,
-            IWebHostEnvironment env,
-            IServiceProvider serviceProvider
-            )
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             app.UseRouting();
             app.UseEndpoints(endpoints =>
@@ -50,14 +46,12 @@ namespace BikeScanner
                 endpoints.MapControllers();
             });
 
-            app.UseHangfireSimpleAuth(Configuration);
+            app.UseSimpleAuth();
             app.UseHangfireDashboard();
-
-            app.UseSwaggerSimpleAuth(Configuration);
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            JobsSetup.ConfigeJobs(serviceProvider);
+            JobsSetup.ConfigeJobs(serviceProvider, Configuration);
         }
     }
 

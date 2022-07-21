@@ -6,13 +6,13 @@ namespace BikeScanner.App.Jobs
     /// <summary>
     /// Crawling => AutoSearch => Notify
     /// </summary>
-    public class CrawlSearchNotifyJob
+    public class ScannerJob
 	{
 		private readonly AdditionalCrawlingJob	_additionalCrawlingJob;
 		private readonly AutoSearchJob			_autoSearchJob;
 		private readonly NotificationsSenderJob	_notificationsSenderJob;
 
-		public CrawlSearchNotifyJob(
+		public ScannerJob(
 			AdditionalCrawlingJob additionalCrawlingJob,
 			AutoSearchJob autoSearchJob,
 			NotificationsSenderJob crawlSearchNotifyJob

@@ -1,4 +1,6 @@
 ﻿using BikeScanner.App.Jobs;
+using BikeScanner.Сonfigs;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BikeScanner.ServiceCollection
@@ -10,7 +12,8 @@ namespace BikeScanner.ServiceCollection
             services.AddTransient<AdditionalCrawlingJob>();
             services.AddTransient<AutoSearchJob>();
             services.AddTransient<NotificationsSenderJob>();
-            services.AddTransient<CrawlSearchNotifyJob>();
+            services.AddTransient<ScannerJob>();
+            services.AddTransient<СontentArchivingJob>();
 
             return services;
         }

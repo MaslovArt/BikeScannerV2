@@ -15,7 +15,8 @@ using Z.EntityFramework.Plus;
 
 namespace BikeScanner.App.Services
 {
-	public abstract class AsyncCrudService<TEntity, TCreateModel, TUpdateModel> where TEntity : StatefulCrudBase
+	public abstract class AsyncCrudService<TEntity, TCreateModel, TUpdateModel>
+        where TEntity : StatefulCrudBase
 	{
         protected readonly BikeScannerContext ctx;
         protected readonly DbSet<TEntity> repository;
@@ -68,13 +69,15 @@ namespace BikeScanner.App.Services
 
         public async Task<TEntity> CreateAsync(
             TCreateModel insertModel,
-            string initialState = null
+            Enum initialState = null
             )
         {
             await ValidateBeforeInsert(insertModel);
 
             var record = insertModel.Adapt<TEntity>();
-            record.State = initialState ?? BaseStates.Active.ToString();
+            record.State = initialState != null
+                ? initialState.ToString()
+                : BaseStates.Active.ToString();
             record.MarkCreated();
             repository.Add(record);
 
@@ -85,7 +88,7 @@ namespace BikeScanner.App.Services
 
         public async Task<TEntity[]> CreateManyAsync(
             IEnumerable<TCreateModel> insertModels,
-            string initialState = null
+            Enum initialState = null
             )
         {
             if (insertModels.Count() == 0)
@@ -97,7 +100,9 @@ namespace BikeScanner.App.Services
             var records = insertModels.Adapt<List<TEntity>>();
             records.ForEach(r =>
             {
-                r.State = initialState ?? BaseStates.Active.ToString();
+                r.State = initialState != null
+                    ? initialState.ToString()
+                    : BaseStates.Active.ToString();
                 r.MarkCreated();
             });
             repository.AddRange(records);
@@ -152,6 +157,14 @@ namespace BikeScanner.App.Services
             if (result <= 0)
                 throw ApiException.NotFound();
         }
+
+        public Task<int> UpdateState(Enum state, Expression<Func<TEntity, bool>> predicate) =>
+            repository
+                .Where(predicate)
+                .UpdateFromQueryAsync(new Dictionary<string, object>
+                {
+                    [nameof(StatefulCrudBase.State)] = state.ToString()
+                });
 
     }
 }

@@ -1,29 +1,31 @@
 ﻿using System;
 using BikeScanner.App.Jobs;
+using BikeScanner.Core.Extensions;
 using BikeScanner.Сonfigs;
 using Hangfire;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace BikeScanner.App.Hangfire
 {
-	public static class JobsSetup
+    public static class JobsSetup
 	{
-		public static void ConfigeJobs(IServiceProvider serviceProvider)
+		public static void ConfigeJobs(
+            IServiceProvider serviceProvider,
+            IConfiguration configuration
+            )
         {
             GlobalConfiguration.Configuration
                 .UseActivator(new HangfireActivator(serviceProvider));
             GlobalJobFilters.Filters
                 .Add(new AutomaticRetryAttribute { Attempts = 0 });
 
-            var cronExpression = serviceProvider
-                .GetRequiredService<IOptions<BikeScannerConfig>>()
-                .Value.CrawlJobCron;
+            var jobConfig = configuration
+                .GetSectionAs<JobConfig>(nameof(JobConfig));
 
             RecurringJob.AddOrUpdate<AdditionalCrawlingJob>(
                 JobNames.ADDITIONAL_CRAWLING,
                 j => j.Execute(),
-                cronExpression
+                Cron.Never
                 );
             RecurringJob.AddOrUpdate<NotificationsSenderJob>(
                 JobNames.NOTIFICATIONS,
@@ -35,11 +37,19 @@ namespace BikeScanner.App.Hangfire
                 j => j.Execute(),
                 Cron.Never
                 );
-            RecurringJob.AddOrUpdate<CrawlSearchNotifyJob>(
-                JobNames.CRAWL_SEARCH_NOTIFY,
+
+            RecurringJob.AddOrUpdate<ScannerJob>(
+                JobNames.SCANNER,
                 j => j.Execute(),
-                Cron.Never
+                jobConfig.ScannerJobCron
                 );
+
+            RecurringJob.AddOrUpdate<СontentArchivingJob>(
+                JobNames.CONTENT_ARCHIVING,
+                j => j.Execute(),
+                jobConfig.ContentArchivingJobCron
+                );
+
         }
 	}
 }
