@@ -62,11 +62,12 @@ namespace BikeScanner.App.Services
                 dct = new JobExecutionInfo()
                 {
                     Code = code,
-                    Value = value
                 };
                 _repository.Add(dct);
-                await _ctx.SaveChangesAsync();
             }
+
+            dct.Value = value;
+            await _ctx.SaveChangesAsync();
 
             return dct;
         }

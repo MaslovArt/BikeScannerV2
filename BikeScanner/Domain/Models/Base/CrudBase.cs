@@ -7,9 +7,9 @@ namespace BikeScanner.Domain.Models.Base
         public DateTime CreateDate { get; protected set; }
         public DateTime? UpdateDate { get; protected set; }
 
-        public void MarkCreated() => CreateDate = DateTime.UtcNow;
+        public void MarkCreated() => CreateDate = DateTime.Now;
 
-        public void MarkUpdated() => UpdateDate = DateTime.UtcNow;
+        public void MarkUpdated() => UpdateDate = DateTime.Now;
     }
 
 }

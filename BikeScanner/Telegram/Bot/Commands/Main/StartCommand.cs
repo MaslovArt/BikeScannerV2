@@ -2,6 +2,8 @@
 using BikeScanner.App.Models;
 using BikeScanner.App.Services;
 using BikeScanner.Domain.States;
+using BikeScanner.Telegram.Bot.Helpers;
+using static BikeScanner.Telegram.Bot.Commands.CommandNames;
 
 namespace BikeScanner.Telegram.Bot.Commands.Main
 {
@@ -41,8 +43,15 @@ namespace BikeScanner.Telegram.Bot.Commands.Main
 {CommandNames.UI.AddSub} - Добавить подписку
 {CommandNames.UI.DeleteSub} - Удалить подписку
 {CommandNames.UI.DevMessage} - Сообщение админу
+{CommandNames.UI.Help} - Помощь
 {CommandNames.UI.Start} - Перезапуск бота";
-            await SendMessage(message, context);
+
+            var buttons = TelegramMarkupHelper.KeyboardRowBtns(
+                AlternativeUI.Search,
+                AlternativeUI.MySubs
+                );
+
+            await SendMessage(message, context, buttons);
             await base.ExecuteCommand(context);
         }
     }

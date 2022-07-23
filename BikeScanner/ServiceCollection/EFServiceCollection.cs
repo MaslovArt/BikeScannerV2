@@ -1,4 +1,5 @@
-﻿using BikeScanner.Core.Extensions;
+﻿using System;
+using BikeScanner.Core.Extensions;
 using BikeScanner.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,9 @@ namespace BikeScanner.ServiceCollection
             IConfiguration configuration
             )
         {
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
+
             services.AddDbContext<BikeScannerContext>(options =>
             {
                 options.UseNpgsql(configuration.DefaultConnection());

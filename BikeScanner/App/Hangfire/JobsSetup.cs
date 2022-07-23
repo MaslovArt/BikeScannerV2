@@ -24,29 +24,29 @@ namespace BikeScanner.App.Hangfire
 
             RecurringJob.AddOrUpdate<AdditionalCrawlingJob>(
                 JobNames.ADDITIONAL_CRAWLING,
-                j => j.Execute(),
+                j => j.Execute(null),
                 Cron.Never
                 );
             RecurringJob.AddOrUpdate<NotificationsSenderJob>(
                 JobNames.NOTIFICATIONS,
-                j => j.Execute(),
+                j => j.Execute(null),
                 Cron.Never
                 );
             RecurringJob.AddOrUpdate<AutoSearchJob>(
                 JobNames.AUTO_SEARCH,
-                j => j.Execute(),
+                j => j.Execute(null),
                 Cron.Never
                 );
 
             RecurringJob.AddOrUpdate<ScannerJob>(
                 JobNames.SCANNER,
-                j => j.Execute(),
+                j => j.Execute(null),
                 jobConfig.ScannerJobCron
                 );
 
             RecurringJob.AddOrUpdate<СontentArchivingJob>(
                 JobNames.CONTENT_ARCHIVING,
-                j => j.Execute(),
+                j => j.Execute(null),
                 jobConfig.ContentArchivingJobCron
                 );
 

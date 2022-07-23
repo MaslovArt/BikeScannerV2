@@ -3,11 +3,11 @@ using BikeScanner.App.Hangfire;
 using BikeScanner.Core.Extensions;
 using BikeScanner.ServiceCollection;
 using Hangfire;
+using Hangfire.Console;
 using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace BikeScanner
 {
@@ -33,8 +33,12 @@ namespace BikeScanner
             services.AddTelegramNotificator();
             services.AddTelegramBotUI(Configuration);
             //services.AddTelegramWebhookHostedService();
+            services.AddTelegramPollingHostedService();
             services.AddHangfire(o =>
-                o.UsePostgreSqlStorage(Configuration.DefaultConnection()));
+            {
+                o.UsePostgreSqlStorage(Configuration.DefaultConnection());
+                o.UseConsole();
+            });
             services.AddHangfireServer();
         }
 

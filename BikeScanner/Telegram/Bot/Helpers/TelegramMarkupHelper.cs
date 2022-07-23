@@ -14,18 +14,14 @@ namespace BikeScanner.Telegram.Bot.Helpers
         /// Return direction row buttons for keyboard
         /// </summary>
         /// <param name="btns">Array of btns (same text and callback)</param>
-        /// <param name="autoHide">Hide keyboard after first usage</param>
         /// <returns></returns>
-        public static ReplyKeyboardMarkup KeyboardRowBtns(string[] btns, bool autoHide = false)
+        public static ReplyKeyboardMarkup KeyboardRowBtns(params string[] btns)
         {
             var buttons = new List<List<KeyboardButton>>
             {
                 btns.Select(o => new KeyboardButton(o)).ToList()
             };
-            return new ReplyKeyboardMarkup(buttons)
-            {
-                OneTimeKeyboard = autoHide
-            };
+            return new ReplyKeyboardMarkup(buttons);
         }
 
         /// <summary>

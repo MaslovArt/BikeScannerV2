@@ -1,49 +1,34 @@
-﻿using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using BikeScanner.App.Jobs.Base;
 using BikeScanner.App.Services;
-using Hangfire;
 using Microsoft.Extensions.Logging;
 
 namespace BikeScanner.App.Jobs
 {
-    public class NotificationsSenderJob
+    /// <summary>
+    /// Send scheduled notifications
+    /// </summary>
+    public class NotificationsSenderJob : JobBase
     {
         private readonly NotificationService _notificationService;
-        private readonly ILogger<NotificationsSenderJob> _logger;
 
         public NotificationsSenderJob(
             ILogger<NotificationsSenderJob> logger,
             NotificationService notificationService
             )
+            : base(logger)
         {
-            _logger = logger;
             _notificationService = notificationService;
         }
 
-        [JobDisplayName("Send notifications")]
-        public async Task Execute()
-        {
-            var notifyWatch = new Stopwatch();
-            notifyWatch.Start();
+        public override string JobName => "Notificator";
 
-            _logger.LogInformation("Start notifying");
-            try
-            {
-                var total = await _notificationService.SendAllScheduledNotifications();
-                _logger.LogInformation($"Process {total} notifications");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogCritical(ex, $"Notifying error: {ex.Message}");
-                throw;
-            }
-            finally
-            {
-                notifyWatch.Stop();
-                _logger.LogInformation($"Finish notifying in {notifyWatch.Elapsed}");
-            }
+        public override async Task Run()
+        {
+            var total = await _notificationService.SendAllScheduledNotifications();
+            LogInformation($"Process {total} notifications");
         }
+
     }
 }
 
