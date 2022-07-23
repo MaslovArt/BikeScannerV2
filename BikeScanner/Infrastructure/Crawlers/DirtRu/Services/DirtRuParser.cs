@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BikeScanner.Core.Extensions;
 using BikeScanner.Infrastructure.Crawlers.DirtRu.Models;
@@ -104,13 +105,19 @@ namespace BikeScanner.Infrastructure.Crawlers.DirtRu.Services
                 var published = columns[3].InnerText
                     .ReplaceAll(new string[] { "\r", "\n", "\t" }, "")
                     .Split("от")[0];
+                var authorIdContainer = columns[2]
+                    .GetChildElements()
+                    .ToArray()[1]
+                    .InnerHtml;
+                var authorId = int.Parse(Regex.Matches(authorIdContainer, @"(?<=u=)[0-9]+").First().Value);
 
                 return new ForumItem()
                 {
                     Url = $"https://forum.dirt.ru/showthread.php?t={itemId}",
                     Text = desctiption,
                     Prefix = prefix,
-                    Published = DateTime.ParseExact(published, "dd.MM.yyyy HH:mm", null)
+                    Published = DateTime.ParseExact(published, "dd.MM.yyyy HH:mm", null),
+                    AuthorId = authorId
                 };
             }
             catch (Exception ex)

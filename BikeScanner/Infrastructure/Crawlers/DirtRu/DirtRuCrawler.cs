@@ -47,6 +47,8 @@ namespace BikeScanner.Infrastructure.Crawlers.DirtRu
                     Text = $"{i.Prefix} {i.Text}",
                     Published = i.Published,
                     SourceType = CrawlerType.DirtRu.ToString(),
+                    SourceId = CrawlerType.DirtRu.ToString(),
+                    AuthorId = i.AuthorId,
                 })
                 .ToArray();
         }

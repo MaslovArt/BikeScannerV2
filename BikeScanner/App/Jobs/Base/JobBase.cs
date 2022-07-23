@@ -31,7 +31,7 @@ namespace BikeScanner.App.Jobs.Base
             try
             {
                 await Run();
-                performContext.WriteLine(ConsoleTextColor.Green, "Success");
+                performContext.WriteLine(ConsoleTextColor.Green, $"Success: {JobName}");
             }
             catch (Exception ex)
             {

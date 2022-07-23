@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BikeScanner.App.Models;
@@ -58,6 +59,7 @@ namespace BikeScanner.App.Services
         public Task<int> ArchiveContents(DateTime since) =>
             UpdateState(ContentStates.Archive, c => c.State == ContentStates.Active.ToString() &&
                                                     c.Published < since);
+
     }
 }
 

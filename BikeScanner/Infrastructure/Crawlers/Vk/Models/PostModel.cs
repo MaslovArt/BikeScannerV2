@@ -20,6 +20,9 @@ namespace BikeScanner.Infrastructure.Crawlers.Vk.Models
         [JsonPropertyName("date")]
         public long DateStamp { get; set; }
 
+        [JsonPropertyName("from_id")]
+        public int AuthorId { get; set; }
+
         public bool IsPinned => PinnedValue == 1;
 
         public string Url => $"https://vk.com/{(OwnerId > 0 ? $"id{OwnerId}" : $"club{Math.Abs(OwnerId)}")}?w=wall{OwnerId}_{Id}";

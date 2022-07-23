@@ -33,6 +33,7 @@ namespace BikeScanner.Core.Extensions
                 str = str.Replace(oldStr, newStr);
             return str;
         }
+
     }
 }
 

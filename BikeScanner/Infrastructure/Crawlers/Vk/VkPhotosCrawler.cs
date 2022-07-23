@@ -71,7 +71,9 @@ namespace BikeScanner.Infrastructure.Crawlers.Vk
                     Text = p.Text,
                     Published = DateTimeOffset.FromUnixTimeSeconds(p.DateStamp).DateTime,
                     SourceType = CrawlerType.VkAlbum.ToString(),
-                    Url = p.Url
+                    SourceId = $"{p.OwnerId}",
+                    AuthorId = p.AuthorId,
+                    Url = p.Url,
                 })
                 .ToArray();
         }
